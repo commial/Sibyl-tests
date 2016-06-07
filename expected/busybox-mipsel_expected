@@ -1,0 +1,14 @@
+0x0041a66c : memcmp
+0x0041ae40 : strcat
+0x0041ae80 : strchr
+0x0041b080 : strcmp
+0x0041b0b0 : strcpy
+0x0041b170 : strlen
+0x0041b230 : strncmp
+0x0041b300 : strncpy
+0x0041b3c0 : strnlen
+0x0041b630 : strspn
+0x0041bd50 : strpbrk
+0x0045ec94 : strlen
+0x004ac138 : strcmp
+0x005057c0 : isdigit
