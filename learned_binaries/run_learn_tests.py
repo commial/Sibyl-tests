@@ -88,8 +88,18 @@ def find_func_by_name(elf, func):
     except:
         return -1
 
-    
 
+devnull = open(os.devnull, "w")
+old_stderr = os.fdopen(os.dup(sys.stderr.fileno()), "w", 0)
+
+def close_stderr():
+    os.close(sys.stderr.fileno())
+    sys.stderr = os.fdopen(os.dup(devnull.fileno()), "w", 0)
+    
+def reopen_stderr():
+    sys.stderr = os.fdopen(os.dup(old_stderr.fileno()), "w", 0)
+
+    
 func_names = {}
 
 for test in open("function_names.txt"):
@@ -164,8 +174,10 @@ for c_file in c_files:
             
         tl = TestLauncher(c_file, machine, abi, list_class, "gcc")
 
+        close_stderr()
         possible_funcs = tl.run(func_addr)
-
+        reopen_stderr()
+        
         possible_funcs = ["_".join(possible_func.split('_')[:-1]) for possible_func in possible_funcs]
         
         eq_names = equivalent_func(func_name)
@@ -180,7 +192,8 @@ for c_file in c_files:
             print c_file, func_name, possible_funcs
             raise e
 
-        print " is OK !"
+        print " is OK !",
+        sys.stderr.write("\n")
 
 print "Replaying created tests on mutated functions"
         
@@ -204,8 +217,11 @@ for c_file in c_files:
                 print "\treplay for "+func_name,
 
                 tl = TestLauncher(mut, machineX86, ABI_AMD64, list_class, "gcc")
+
+                close_stderr()
                 possible_funcs = tl.run(func_addr)
-        
+                reopen_stderr()
+                
                 eq_names = equivalent_func(func_name)
 
                 try:
@@ -214,6 +230,7 @@ for c_file in c_files:
                 except:
                     print mut, func_name, eq_names, possible_funcs
 
-                print " is OK !"
+                print " is OK !",
+                sys.stderr.write("\n")
             
 
