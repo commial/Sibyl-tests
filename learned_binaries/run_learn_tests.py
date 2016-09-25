@@ -132,13 +132,13 @@ for c_file in c_files:
         main_addr = find_func_by_name(elf, "main")
         func_addr = find_func_by_name(elf, func_name)
 
-        cmd = "python "+SIBYL_PATH+"/learn.py -t miasm -m %s %s %s %s" % (hex(main_addr),func_name+"_"+c_file.split('.')[-1:][0]
-                                                                          ,hex(func_addr),c_file)
+        cmd = "python "+SIBYL_PATH+"/learn.py -t miasm -a %s -m %s %s %s" % (hex(func_addr), hex(main_addr),func_name+"_"+c_file.split('.')[-1:][0]
+                                                                          , c_file)
         sibyl = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         tmp_stdout, stderr = sibyl.communicate()
-        
+
         stdout += tmp_stdout
-        
+
 mod = imp.new_module("testclass")
 exec stdout in mod.__dict__
 
