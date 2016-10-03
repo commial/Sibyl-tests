@@ -47,6 +47,13 @@ diff -u expected/busybox-mipsel_expected  busybox-mipsel_result
 echo "********************************************************************************"
 rm busybox-mipsel_result
 
+echo "********************************************************************************"
+cd learned_binaries
+python run_learn_tests.py 2> /dev/null
+cd ..
+echo "********************************************************************************"
+
+
 # Too slow for travis
 # python $SIBYL/find.py -q binaries/busybox-mipsel ABI_MIPS_O32 2>&1 | grep -v "WARNING" | grep -v "access to non writable page" | sort | tee busybox-mipsel_result
 # 
