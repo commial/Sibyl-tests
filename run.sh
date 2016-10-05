@@ -1,11 +1,14 @@
 #!/bin/sh
+NOBUF="stdbuf -oL -eL"
+
 echo "********************************************************************************"
 echo "Run x86_32 tests..."
 echo "********************************************************************************"
 
-python $SIBYL/find.py -q -a x86_32 binaries/libc-2.21.so ABIStdCall_x86_32 $(cat addresses/libc-2.21_addr) 2>&1 | grep -v "WARNING" | grep -v "access to non writable page" | sort | tee libc-2.21_result
+$NOBUF python $SIBYL/find.py -q -a x86_32 binaries/libc-2.21.so ABIStdCall_x86_32 $(cat addresses/libc-2.21_addr) 2>&1 | $NOBUF grep -Ev "(WARNING|access to non writable page)" | tee libc-2.21_result
 
 echo "********************************************************************************"
+sort libc-2.21_result -o libc-2.21_result
 diff -u expected/libc-2.21_expected  libc-2.21_result
 echo "********************************************************************************"
 rm libc-2.21_result
