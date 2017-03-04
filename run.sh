@@ -5,11 +5,10 @@ set -o pipefail
 
 function run_test {
 	NAME=$1
-	ABI=$2
-	EXTRA_ARGS=$3
+	EXTRA_ARGS=$2
 
 	RESULT=$name\_result
-	($NOBUF python $SIBYL/find.py -q $EXTRA_ARGS binaries/$NAME $ABI $(cat addresses/$NAME\_addr) 2>&1 || echo 'Fail' 1>&2) | $NOBUF grep -Ev '(WARNING|access to non writable page)' | tee $RESULT
+	($NOBUF sibyl find $EXTRA_ARGS binaries/$NAME $(cat addresses/$NAME\_addr) 2>&1 || echo 'Fail' 1>&2) | $NOBUF grep -Ev '(WARNING|access to non writable page)' | tee $RESULT
 
 	echo "********************************************************************************"
 	sort $RESULT -o $RESULT
@@ -22,25 +21,31 @@ echo "**************************************************************************
 echo "Run x86_32 tests..."
 echo "********************************************************************************"
 
-run_test libc-2.21.so ABIStdCall_x86_32 '-a x86_32'
+# Basic behavior
+run_test libc-2.21.so '-a x86_32 -b ABIStdCall_x86_32'
 
-run_test libc-2.21.so ABIStdCall_x86_32
+# QEMU + autodetect of ARCH
+run_test libc-2.21.so '-b ABIStdCall_x86_32 -j qemu'
 
 echo "********************************************************************************"
 echo "Run ARM L tests..."
 echo "********************************************************************************"
 
-run_test busybox-armv6l ABI_ARM '-a arml'
+# Basic behavior
+run_test busybox-armv6l '-a arml'
 
-run_test busybox-armv6l ABI_ARM
+# QEMU + autodetect of ABI + autodetect of ARCH
+run_test busybox-armv6l '-j qemu'
 
 echo "********************************************************************************"
 echo "Run MIPS32 L tests..."
 echo "********************************************************************************"
 
-run_test busybox-mipsel ABI_MIPS_O32 '-a mips32l'
+# Basic behavior
+run_test busybox-mipsel '-a mips32l -b ABI_MIPS_O32'
 
-run_test busybox-mipsel ABI_MIPS_O32
+# autodetect of ABI + autodetect of ARCH
+run_test busybox-mipsel
 
 echo "********************************************************************************"
 echo "Run LEARN tests..."
