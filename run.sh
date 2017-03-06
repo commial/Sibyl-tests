@@ -24,28 +24,28 @@ echo "**************************************************************************
 # Basic behavior
 run_test libc-2.21.so '-a x86_32 -b ABIStdCall_x86_32'
 
-# QEMU + autodetect of ARCH
-run_test libc-2.21.so '-b ABIStdCall_x86_32 -j qemu'
+# autodetect of ARCH
+run_test libc-2.21.so '-b ABIStdCall_x86_32'
 
 echo "********************************************************************************"
 echo "Run ARM L tests..."
 echo "********************************************************************************"
 
 # Basic behavior
-run_test busybox-armv6l '-a arml'
+run_test busybox-armv6l '-a arml -b ABI_ARM'
 
-# QEMU + autodetect of ABI + autodetect of ARCH
-run_test busybox-armv6l '-j qemu'
+# autodetect of ABI + autodetect of ARCH
+run_test busybox-armv6l
 
 echo "********************************************************************************"
 echo "Run MIPS32 L tests..."
 echo "********************************************************************************"
 
 # Basic behavior
-run_test busybox-mipsel '-a mips32l -b ABI_MIPS_O32'
+run_test busybox-mipsel '-a mips32l -b ABI_MIPS_O32 -j gcc'
 
 # autodetect of ABI + autodetect of ARCH
-run_test busybox-mipsel
+run_test busybox-mipsel '-j gcc'
 
 echo "********************************************************************************"
 echo "Run LEARN tests..."
