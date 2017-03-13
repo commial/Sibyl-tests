@@ -42,10 +42,10 @@ echo "Run MIPS32 L tests..."
 echo "********************************************************************************"
 
 # Basic behavior
-run_test busybox-mipsel '-a mips32l -b ABI_MIPS_O32 -j gcc'
+run_test busybox-mipsel '-a mips32l -b ABI_MIPS_O32'
 
 # autodetect of ABI + autodetect of ARCH
-run_test busybox-mipsel '-j gcc'
+run_test busybox-mipsel
 
 echo "********************************************************************************"
 echo "Run LEARN tests..."
