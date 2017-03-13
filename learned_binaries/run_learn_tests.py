@@ -6,11 +6,6 @@ import imp
 from elfesteem.elf_init import ELF
 from miasm2.analysis.machine import Machine
 
-SIBYL_PATH = os.environ["SIBYL"]
-
-# weird, should be removed when sibyl installation is performed
-sys.path.append(SIBYL_PATH)
-
 from sibyl.testlauncher import TestLauncher
 from sibyl.abi.x86 import ABI_AMD64
 from sibyl.abi.arm import ABI_ARM
@@ -133,7 +128,7 @@ for c_file in c_files:
         func_addr = find_func_by_name(elf, func_name)
 
         cmd = "sibyl learn -t miasm -a %s -m %s %s %s" % (hex(func_addr),
-                                                          hex(main_addr)
+                                                          hex(main_addr),
                                                           func_name+"_"+c_file.split('.')[-1:][0],
                                                           c_file)
         sibyl = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
