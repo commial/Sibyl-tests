@@ -7,7 +7,7 @@ from elfesteem.elf_init import ELF
 from miasm2.analysis.machine import Machine
 
 from sibyl.testlauncher import TestLauncher
-from sibyl.abi.x86 import ABI_AMD64
+from sibyl.abi.x86 import ABI_AMD64_SYSTEMV
 from sibyl.abi.arm import ABI_ARM
 
 from pdb import pm
@@ -161,7 +161,7 @@ for c_file in c_files:
             elf = ELF(fdesc.read())
         func_addr = find_func_by_name(elf, func_name)
 
-        abi = ABI_AMD64
+        abi = ABI_AMD64_SYSTEMV
         machine = machineX86
         if c_file.endswith(".arm"):
             machine = machineARM
@@ -213,7 +213,7 @@ for c_file in c_files:
 
                 print "\treplay for "+func_name,
 
-                tl = TestLauncher(mut, machineX86, ABI_AMD64, list_class, "gcc")
+                tl = TestLauncher(mut, machineX86, ABI_AMD64_SYSTEMV, list_class, "gcc")
 
                 close_stderr()
                 possible_funcs = tl.run(func_addr)
