@@ -8,7 +8,7 @@ function run_test {
 	EXTRA_ARGS=$2
 
 	RESULT=$name\_result
-	($NOBUF sibyl find $EXTRA_ARGS binaries/$NAME $(cat addresses/$NAME\_addr) 2>&1 || echo 'Fail' 1>&2) | $NOBUF grep -Ev '(WARNING|access to non writable page)' | tee $RESULT
+	($NOBUF sibyl find $EXTRA_ARGS binaries/$NAME addresses/$NAME\_addr 2>&1 || echo 'Fail' 1>&2) | $NOBUF grep -Ev '(WARNING|access to non writable page)' | tee $RESULT
 
 	echo "********************************************************************************"
 	sort $RESULT -o $RESULT
